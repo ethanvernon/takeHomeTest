@@ -19,8 +19,9 @@ export class Parent extends Component {
 			startDate: '',
 			endDate: '',
 			citizenship: '',
-			citizenshipError: '',
-			mailingState: ''
+			citizenshipError: false,
+			mailingState: '',
+			mailingStateError: false
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -35,48 +36,55 @@ export class Parent extends Component {
 	handlePolicyMaximumChange(val) {
 		this.setState({
 			policyMaximum: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		});
 	}
 
 	handleAgeChange(val) {
 		this.setState({
 			age: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		});
 	}
 
 	handleStartDateChange(val) {
 		this.setState({
 			startDate: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		})
 	}
 
 	handleEndDateChange(val) {
 		this.setState({
 			endDate: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		})
 	}
 
 	handleCitizenshipChange(val) {
 		this.setState({
 			citizenship: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		})
 	}
 
 	handleMailingStateChange(val) {
 		this.setState({
 			mailingState: val,
-			citizenshipError: false
+			citizenshipError: false,
+			mailingStateError: false
 		})
 	}
 
 	handleGetQuotes() {
 		//store state in variables
 		let citizenship = this.state.citizenship;
+		let mailingState = this.state.mailingState;
 
 		//run checks on each variable
 		if (/^[A-Za-z ]+$/.test(citizenship)) {
@@ -91,7 +99,17 @@ export class Parent extends Component {
 			});
 		}
 
-		//update error states if applicable
+		if (/^[A-Za-z ]+$/.test(mailingState)) {
+			console.log('all alpha');
+			this.setState({
+				mailingStateError: false
+			});
+		} else {
+			console.log("contains non-alpha");
+			this.setState({
+				mailingStateError: true
+			});
+		}
 	}
 
 	render() {
@@ -117,12 +135,15 @@ export class Parent extends Component {
 					value={this.state.citizenship}
 				/>
 				{this.state.citizenshipError &&
-					<span>Citizenship cannot contain numbers or special characters</span>
+					<span>Citizenship cannot contain numbers or special characters or be empty</span>
 				}
 				<MailingState
 					handleInput={this.handleMailingStateChange}
 					value={this.state.mailingState}
 				/>
+				{this.state.mailingStateError &&
+					<span>Mailing State cannot contain numbers or special characters or be empty</span>
+				}
 				<GetQuotes
 					handleGetQuotes={this.handleGetQuotes}
 				/>
