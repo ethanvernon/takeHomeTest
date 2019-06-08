@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node server/bin/www"
+    "start": "nodemon server/bin/www",
+    "dev": "concurrently \"nodemon server/bin/www\" \"cd client && npm start\""
   },
   "dependencies": {
+    "concurrently": "^4.1.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
@@ -13,5 +15,9 @@
     "morgan": "~1.9.0",
     "body-parser": "latest",
     "cors": "^2.8.4"
+  },
+  "devDependencies": {
+    "concurrently": "^4.0.1",
+    "nodemon": "^1.18.4"
   }
 }

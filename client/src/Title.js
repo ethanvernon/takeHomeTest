@@ -1,0 +1,25 @@
+import React, { Component } from 'react';
+
+export class Title extends Component {
+
+	constructor(props) {
+	    super(props);
+
+	    this.state = {
+	      	myState: null
+	    };
+	    
+	   //this.handleClick = this.handleClick.bind(this);
+	}	
+
+	handleClick() {
+		return null;
+	}
+
+	render() {
+		return (
+			<div className='title-div'>		
+			</div>
+		)
+	}
+}
