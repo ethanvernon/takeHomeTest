@@ -22,7 +22,8 @@ export class Parent extends Component {
 			citizenshipError: false,
 			mailingState: '',
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -39,7 +40,8 @@ export class Parent extends Component {
 			policyMaximum: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		});
 	}
 
@@ -48,7 +50,8 @@ export class Parent extends Component {
 			age: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		});
 	}
 
@@ -57,7 +60,8 @@ export class Parent extends Component {
 			startDate: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
@@ -66,7 +70,8 @@ export class Parent extends Component {
 			endDate: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
@@ -75,7 +80,8 @@ export class Parent extends Component {
 			citizenship: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
@@ -84,7 +90,8 @@ export class Parent extends Component {
 			mailingState: val,
 			citizenshipError: false,
 			mailingStateError: false,
-			emptyValuesError: false
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
@@ -96,6 +103,8 @@ export class Parent extends Component {
 		let age = this.state.age;
 		let startDate = this.state.startDate;
 		let endDate = this.state.endDate;
+		let currentYear=new Date().getFullYear();
+		let lowestYear=currentYear-100;
 
 		//check if any fields are empty
 		if (!citizenship || !mailingState || !policyMaximum || !age || !startDate || !endDate) {
@@ -104,7 +113,7 @@ export class Parent extends Component {
 			})
 		}
 
-		//run checks on each variable
+		//run checks for special chars and numbers in citizenship and mailing state
 		if (!/^[A-Za-z ]+$/.test(citizenship)) {
 			this.setState({
 				citizenshipError: true
@@ -114,6 +123,17 @@ export class Parent extends Component {
 		if (!/^[A-Za-z ]+$/.test(mailingState)) {
 			this.setState({
 				mailingStateError: true
+			});
+		}
+
+		//run checks for >100 in age
+		if (0 <= age && age <= 100) {
+			console.log('user between 0 and 100 years old')
+		} else if (age >= lowestYear && age > 100 && age <= currentYear) {
+			console.log('user birthyear between '+lowestYear+ ' and '+currentYear);
+		} else {
+			this.setState({
+				ageError: true
 			});
 		}
 	}
@@ -130,6 +150,9 @@ export class Parent extends Component {
 					value={this.state.age}
 					handleInput={this.handleAgeChange}
 				/>
+				{this.state.ageError &&
+					<span>Age must be between 0 and 100</span>
+				}
 				<TravelDates
 					startDate={this.state.startDate}
 					endDate={this.state.endDate}
