@@ -15,7 +15,7 @@ export class MailingState extends Component {
 	render() {
 		return (
 			<div className='mailing-state-div'>		
-				Mailing State: <input type="text" name="citizenship" value={this.props.value} placeholder="Choose State" onChange={this.handleChange} />
+				Mailing State: <input type="text" name="mailing-state" value={this.props.value} placeholder="Choose State" onChange={this.handleChange} />
 			</div>
 		)
 	}
