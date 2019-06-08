@@ -21,7 +21,8 @@ export class Parent extends Component {
 			citizenship: '',
 			citizenshipError: false,
 			mailingState: '',
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -37,7 +38,8 @@ export class Parent extends Component {
 		this.setState({
 			policyMaximum: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		});
 	}
 
@@ -45,7 +47,8 @@ export class Parent extends Component {
 		this.setState({
 			age: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		});
 	}
 
@@ -53,7 +56,8 @@ export class Parent extends Component {
 		this.setState({
 			startDate: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		})
 	}
 
@@ -61,7 +65,8 @@ export class Parent extends Component {
 		this.setState({
 			endDate: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		})
 	}
 
@@ -69,7 +74,8 @@ export class Parent extends Component {
 		this.setState({
 			citizenship: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		})
 	}
 
@@ -77,7 +83,8 @@ export class Parent extends Component {
 		this.setState({
 			mailingState: val,
 			citizenshipError: false,
-			mailingStateError: false
+			mailingStateError: false,
+			emptyValuesError: false
 		})
 	}
 
@@ -85,27 +92,26 @@ export class Parent extends Component {
 		//store state in variables
 		let citizenship = this.state.citizenship;
 		let mailingState = this.state.mailingState;
+		let policyMaximum = this.state.policyMaximum;
+		let age = this.state.age;
+		let startDate = this.state.startDate;
+		let endDate = this.state.endDate;
+
+		//check if any fields are empty
+		if (!citizenship || !mailingState || !policyMaximum || !age || !startDate || !endDate) {
+			this.setState({
+				emptyValuesError: true
+			})
+		}
 
 		//run checks on each variable
-		if (/^[A-Za-z ]+$/.test(citizenship)) {
-			console.log('all alpha');
-			this.setState({
-				citizenshipError: false
-			});
-		} else {
-			console.log("contains non-alpha");
+		if (!/^[A-Za-z ]+$/.test(citizenship)) {
 			this.setState({
 				citizenshipError: true
 			});
 		}
 
-		if (/^[A-Za-z ]+$/.test(mailingState)) {
-			console.log('all alpha');
-			this.setState({
-				mailingStateError: false
-			});
-		} else {
-			console.log("contains non-alpha");
+		if (!/^[A-Za-z ]+$/.test(mailingState)) {
 			this.setState({
 				mailingStateError: true
 			});
@@ -143,6 +149,9 @@ export class Parent extends Component {
 				/>
 				{this.state.mailingStateError &&
 					<span>Mailing State cannot contain numbers or special characters or be empty</span>
+				}
+				{this.state.emptyValuesError &&
+					<span>All fields are required</span>
 				}
 				<GetQuotes
 					handleGetQuotes={this.handleGetQuotes}
