@@ -28,6 +28,7 @@ export class Parent extends Component {
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCitizenshipChange = this.handleCitizenshipChange.bind(this);
 		this.handleMailingStateChange = this.handleMailingStateChange.bind(this);
+		this.handleGetQuotes = this.handleGetQuotes.bind(this);
 	}	
 
 	handlePolicyMaximumChange(val) {
@@ -66,6 +67,10 @@ export class Parent extends Component {
 		})
 	}
 
+	handleGetQuotes() {
+		//button clicked
+	}
+
 	render() {
 		return (
 			<div className='parent-div'>
@@ -92,7 +97,9 @@ export class Parent extends Component {
 					handleInput={this.handleMailingStateChange}
 					value={this.state.mailingState}
 				/>
-				<GetQuotes/>
+				<GetQuotes
+					handleGetQuotes={this.handleGetQuotes}
+				/>
 				<Reset/>				
 			</div>
 		)
