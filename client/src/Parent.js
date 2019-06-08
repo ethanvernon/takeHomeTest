@@ -19,6 +19,7 @@ export class Parent extends Component {
 			startDate: '',
 			endDate: '',
 			citizenship: '',
+			citizenshipError: '',
 			mailingState: ''
 		};
 
@@ -29,41 +30,47 @@ export class Parent extends Component {
 		this.handleCitizenshipChange = this.handleCitizenshipChange.bind(this);
 		this.handleMailingStateChange = this.handleMailingStateChange.bind(this);
 		this.handleGetQuotes = this.handleGetQuotes.bind(this);
-	}	
+	}
 
 	handlePolicyMaximumChange(val) {
 		this.setState({
-			policyMaximum: val
+			policyMaximum: val,
+			citizenshipError: false
 		});
 	}
 
 	handleAgeChange(val) {
 		this.setState({
-			age: val
+			age: val,
+			citizenshipError: false
 		});
 	}
 
 	handleStartDateChange(val) {
 		this.setState({
-			startDate: val
+			startDate: val,
+			citizenshipError: false
 		})
 	}
 
 	handleEndDateChange(val) {
 		this.setState({
-			endDate: val
+			endDate: val,
+			citizenshipError: false
 		})
 	}
 
 	handleCitizenshipChange(val) {
 		this.setState({
-			citizenship: val
+			citizenship: val,
+			citizenshipError: false
 		})
 	}
 
 	handleMailingStateChange(val) {
 		this.setState({
-			mailingState: val
+			mailingState: val,
+			citizenshipError: false
 		})
 	}
 
@@ -74,8 +81,14 @@ export class Parent extends Component {
 		//run checks on each variable
 		if (/^[A-Za-z ]+$/.test(citizenship)) {
 			console.log('all alpha');
+			this.setState({
+				citizenshipError: false
+			});
 		} else {
 			console.log("contains non-alpha");
+			this.setState({
+				citizenshipError: true
+			});
 		}
 
 		//update error states if applicable
@@ -103,6 +116,9 @@ export class Parent extends Component {
 					handleInput={this.handleCitizenshipChange}
 					value={this.state.citizenship}
 				/>
+				{this.state.citizenshipError &&
+					<span>Citizenship cannot contain numbers or special characters</span>
+				}
 				<MailingState
 					handleInput={this.handleMailingStateChange}
 					value={this.state.mailingState}
