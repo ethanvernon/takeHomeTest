@@ -11,18 +11,26 @@ import {Reset} from './Reset';
 export class Parent extends Component {
 
 	constructor(props) {
-	    super(props);
+		super(props);
 
-	    this.state = {
-	      	policyMaximum: 'Choose your policy maximum'
-	    };
-	    
-	   this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
+		this.state = {
+			policyMaximum: 'Choose your policy maximum',
+			age: ''
+		};
+
+		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
+		this.handleAgeChange = this.handleAgeChange.bind(this);
 	}	
 
 	handlePolicyMaximumChange(val) {
 		this.setState({
 			policyMaximum: val
+		});
+	}
+
+	handleAgeChange(val) {
+		this.setState({
+			age: val
 		});
 	}
 
@@ -34,7 +42,10 @@ export class Parent extends Component {
 					value={this.state.PolicyMaximum}
 					handleSelect={this.handlePolicyMaximumChange}
 				/>
-				<Age/>
+				<Age
+					value={this.state.age}
+					handleInput={this.handleAgeChange}
+				/>
 				<TravelDates/>
 				<Citizenship/>
 				<MailingState/>
