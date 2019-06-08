@@ -19,7 +19,11 @@ export class Parent extends Component {
 			startDate: '',
 			endDate: '',
 			citizenship: '',
-			mailingState: ''
+			citizenshipError: false,
+			mailingState: '',
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -28,42 +32,110 @@ export class Parent extends Component {
 		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 		this.handleCitizenshipChange = this.handleCitizenshipChange.bind(this);
 		this.handleMailingStateChange = this.handleMailingStateChange.bind(this);
-	}	
+		this.handleGetQuotes = this.handleGetQuotes.bind(this);
+	}
 
 	handlePolicyMaximumChange(val) {
 		this.setState({
-			policyMaximum: val
+			policyMaximum: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		});
 	}
 
 	handleAgeChange(val) {
 		this.setState({
-			age: val
+			age: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		});
 	}
 
 	handleStartDateChange(val) {
 		this.setState({
-			startDate: val
+			startDate: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
 	handleEndDateChange(val) {
 		this.setState({
-			endDate: val
+			endDate: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
 	handleCitizenshipChange(val) {
 		this.setState({
-			citizenship: val
+			citizenship: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		})
 	}
 
 	handleMailingStateChange(val) {
 		this.setState({
-			mailingState: val
+			mailingState: val,
+			citizenshipError: false,
+			mailingStateError: false,
+			emptyValuesError: false,
+			ageError: false
 		})
+	}
+
+	handleGetQuotes() {
+		//store state in variables
+		let citizenship = this.state.citizenship;
+		let mailingState = this.state.mailingState;
+		let policyMaximum = this.state.policyMaximum;
+		let age = this.state.age;
+		let startDate = this.state.startDate;
+		let endDate = this.state.endDate;
+		let currentYear=new Date().getFullYear();
+		let lowestYear=currentYear-100;
+
+		//check if any fields are empty
+		if (!citizenship || !mailingState || !policyMaximum || !age || !startDate || !endDate) {
+			this.setState({
+				emptyValuesError: true
+			})
+		}
+
+		//run checks for special chars and numbers in citizenship and mailing state
+		if (!/^[A-Za-z ]+$/.test(citizenship)) {
+			this.setState({
+				citizenshipError: true
+			});
+		}
+
+		if (!/^[A-Za-z ]+$/.test(mailingState)) {
+			this.setState({
+				mailingStateError: true
+			});
+		}
+
+		//run checks for >100 in age
+		if (0 <= age && age <= 100) {
+			console.log('user between 0 and 100 years old')
+		} else if (age >= lowestYear && age > 100 && age <= currentYear) {
+			console.log('user birthyear between '+lowestYear+ ' and '+currentYear);
+		} else {
+			this.setState({
+				ageError: true
+			});
+		}
 	}
 
 	render() {
@@ -78,6 +150,9 @@ export class Parent extends Component {
 					value={this.state.age}
 					handleInput={this.handleAgeChange}
 				/>
+				{this.state.ageError &&
+					<span>Age must be between 0 and 100</span>
+				}
 				<TravelDates
 					startDate={this.state.startDate}
 					endDate={this.state.endDate}
@@ -88,11 +163,22 @@ export class Parent extends Component {
 					handleInput={this.handleCitizenshipChange}
 					value={this.state.citizenship}
 				/>
+				{this.state.citizenshipError &&
+					<span>Citizenship cannot contain numbers or special characters or be empty</span>
+				}
 				<MailingState
 					handleInput={this.handleMailingStateChange}
 					value={this.state.mailingState}
 				/>
-				<GetQuotes/>
+				{this.state.mailingStateError &&
+					<span>Mailing State cannot contain numbers or special characters or be empty</span>
+				}
+				{this.state.emptyValuesError &&
+					<span>All fields are required</span>
+				}
+				<GetQuotes
+					handleGetQuotes={this.handleGetQuotes}
+				/>
 				<Reset/>				
 			</div>
 		)
