@@ -15,11 +15,15 @@ export class Parent extends Component {
 
 		this.state = {
 			policyMaximum: 'Choose your policy maximum',
-			age: ''
+			age: '',
+			startDate: '',
+			endDate: ''
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
 		this.handleAgeChange = this.handleAgeChange.bind(this);
+		this.handleStartDateChange = this.handleStartDateChange.bind(this);
+		this.handleEndDateChange = this.handleEndDateChange.bind(this);
 	}	
 
 	handlePolicyMaximumChange(val) {
@@ -34,6 +38,18 @@ export class Parent extends Component {
 		});
 	}
 
+	handleStartDateChange(val) {
+		this.setState({
+			startDate: val
+		})
+	}
+
+	handleEndDateChange(val) {
+		this.setState({
+			endDate: val
+		})
+	}
+
 	render() {
 		return (
 			<div className='parent-div'>
@@ -46,7 +62,12 @@ export class Parent extends Component {
 					value={this.state.age}
 					handleInput={this.handleAgeChange}
 				/>
-				<TravelDates/>
+				<TravelDates
+					startDate={this.state.startDate}
+					endDate={this.state.endDate}
+					handleStartDateChange={this.handleStartDateChange}
+					handleEndDateChange={this.handleEndDateChange}
+				/>
 				<Citizenship/>
 				<MailingState/>
 				<GetQuotes/>
