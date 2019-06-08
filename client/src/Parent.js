@@ -68,7 +68,17 @@ export class Parent extends Component {
 	}
 
 	handleGetQuotes() {
-		//button clicked
+		//store state in variables
+		let citizenship = this.state.citizenship;
+
+		//run checks on each variable
+		if (/^[A-Za-z ]+$/.test(citizenship)) {
+			console.log('all alpha');
+		} else {
+			console.log("contains non-alpha");
+		}
+
+		//update error states if applicable
 	}
 
 	render() {

@@ -14,7 +14,7 @@ export class GetQuotes extends Component {
 
 	render() {
 		return (
-			<button>
+			<button onClick={this.handleClick}>
 				GET QUOTES
 			</button>
 		)
