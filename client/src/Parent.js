@@ -33,6 +33,7 @@ export class Parent extends Component {
 		this.handleCitizenshipChange = this.handleCitizenshipChange.bind(this);
 		this.handleMailingStateChange = this.handleMailingStateChange.bind(this);
 		this.handleGetQuotes = this.handleGetQuotes.bind(this);
+		this.makeRequest = this.makeRequest.bind(this);
 	}
 
 	handlePolicyMaximumChange(val) {
@@ -105,12 +106,14 @@ export class Parent extends Component {
 		let endDate = this.state.endDate;
 		let currentYear=new Date().getFullYear();
 		let lowestYear=currentYear-100;
+		let success=1;
 
 		//check if any fields are empty
 		if (!citizenship || !mailingState || !policyMaximum || !age || !startDate || !endDate) {
 			this.setState({
 				emptyValuesError: true
-			})
+			});
+			success=0;
 		}
 
 		//run checks for special chars and numbers in citizenship and mailing state
@@ -118,12 +121,14 @@ export class Parent extends Component {
 			this.setState({
 				citizenshipError: true
 			});
+			success=0;
 		}
 
 		if (!/^[A-Za-z ]+$/.test(mailingState)) {
 			this.setState({
 				mailingStateError: true
 			});
+			success=0;
 		}
 
 		//run checks for >100 in age
@@ -135,6 +140,12 @@ export class Parent extends Component {
 			this.setState({
 				ageError: true
 			});
+			success=0;
+		}
+
+		//check for unchanged success var and send api request
+		if (success == 1) {
+			this.makeRequest();
 		}
 	}
 
