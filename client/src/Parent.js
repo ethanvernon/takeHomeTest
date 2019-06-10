@@ -154,7 +154,7 @@ export class Parent extends Component {
 	makeRequest() {
 
 		//builds query
-		let formQuery="http://localhost:8080/";
+		let formQuery="http://localhost:8080/api/quotes";
 
 		axios.get(formQuery)
 			.then(data => {
