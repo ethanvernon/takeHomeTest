@@ -23,7 +23,8 @@ export class Parent extends Component {
 			mailingState: '',
 			mailingStateError: false,
 			emptyValuesError: false,
-			ageError: false
+			ageError: false,
+			results: null
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -147,6 +148,25 @@ export class Parent extends Component {
 		if (success == 1) {
 			this.makeRequest();
 		}
+	}
+
+	makeRequest() {
+
+		//builds query
+		let formQuery="http://localhost:8080/";
+
+		axios.get(formQuery)
+			.then(data => {
+				//sets data to state
+				this.setState({ results: data.data });
+			}).catch(err =>{
+				//handle error
+				console.log(err);
+				this.setState({results: 'error'});
+			}).then(data => {
+				//logs data
+				console.log(this.state.results)
+			});
 	}
 
 	render() {
