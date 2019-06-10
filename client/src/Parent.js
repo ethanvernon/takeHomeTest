@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import axios from "axios";
 import {Title} from './Title';
 import {PolicyMaximum} from './PolicyMaximum';
 import {Age} from './Age';
@@ -23,7 +24,8 @@ export class Parent extends Component {
 			mailingState: '',
 			mailingStateError: false,
 			emptyValuesError: false,
-			ageError: false
+			ageError: false,
+			results: null
 		};
 
 		this.handlePolicyMaximumChange = this.handlePolicyMaximumChange.bind(this);
@@ -33,6 +35,7 @@ export class Parent extends Component {
 		this.handleCitizenshipChange = this.handleCitizenshipChange.bind(this);
 		this.handleMailingStateChange = this.handleMailingStateChange.bind(this);
 		this.handleGetQuotes = this.handleGetQuotes.bind(this);
+		this.makeRequest = this.makeRequest.bind(this);
 	}
 
 	handlePolicyMaximumChange(val) {
@@ -105,12 +108,14 @@ export class Parent extends Component {
 		let endDate = this.state.endDate;
 		let currentYear=new Date().getFullYear();
 		let lowestYear=currentYear-100;
+		let success=1;
 
 		//check if any fields are empty
 		if (!citizenship || !mailingState || !policyMaximum || !age || !startDate || !endDate) {
 			this.setState({
 				emptyValuesError: true
-			})
+			});
+			success=0;
 		}
 
 		//run checks for special chars and numbers in citizenship and mailing state
@@ -118,12 +123,14 @@ export class Parent extends Component {
 			this.setState({
 				citizenshipError: true
 			});
+			success=0;
 		}
 
 		if (!/^[A-Za-z ]+$/.test(mailingState)) {
 			this.setState({
 				mailingStateError: true
 			});
+			success=0;
 		}
 
 		//run checks for >100 in age
@@ -135,7 +142,32 @@ export class Parent extends Component {
 			this.setState({
 				ageError: true
 			});
+			success=0;
 		}
+
+		//check for unchanged success var and send api request
+		if (success == 1) {
+			this.makeRequest();
+		}
+	}
+
+	makeRequest() {
+
+		//builds query
+		let formQuery="http://localhost:8080/quotes";
+
+		axios.get(formQuery)
+			.then(data => {
+				//sets data to state
+				this.setState({ results: data.data });
+			}).catch(err =>{
+				//handle error
+				console.log(err);
+				this.setState({results: 'error'});
+			}).then(data => {
+				//logs data
+				console.log(this.state.results)
+			});
 	}
 
 	render() {
